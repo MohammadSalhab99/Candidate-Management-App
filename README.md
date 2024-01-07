@@ -17,9 +17,10 @@ This is a simple FastAPI application for managing candidate information. It incl
         MONGO_DB_URL=mongodb://mongo:27017/
         MONGO_DB_NAME=candidate_database
         SECRET_KEY=your_secret_key
+### Install dependencies:
 
-Install dependencies:
-
+    pip install -r requirements.txt
+    
 ## Usage
 
 Using Docker Compose
@@ -50,7 +51,7 @@ Open http://localhost:8000/docs in your browser to interact with the Swagger UI 
 ### Candidates
 #### Create Candidate:
 
-POST /candidate
+    POST /candidate
 #### Get Candidate by UUID:
 
     GET /candidate/{candidate_uuid}
