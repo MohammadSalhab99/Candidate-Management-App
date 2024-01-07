@@ -1,14 +1,17 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app.database import MongoDB
 from app.services.user_service import UserService, Token
 from app.services.candidate_service import CandidateService
 from app.models.user import User
 from app.models.candidate import Candidate
 from app.models.authentication import authentication_request
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import Annotated
 from dotenv import load_dotenv
+import pandas as pd
+
 import os
 from datetime import timedelta
 from app.utils.json_encoder import CustomJSONEncoder
@@ -138,6 +141,18 @@ def search_candidates(attribute: str = Query(...), value: str = Query(...),
     serialized_candidates = json.loads(json.dumps(candidates, cls=CustomJSONEncoder))
 
     return serialized_candidates
+
+@app.get("/generate-report")
+async def generate_csv_report(current_user: User = Depends(user_service.get_current_user)):
+    csv_content = candidate_service.generate_csv_content()
+
+    # Save the generated CSV file locally (optional)
+    with open("candidates_report.csv", "wb") as f:
+        f.write(csv_content)
+
+    # Return the CSV file as a response
+    return FileResponse("candidates_report.csv", filename="candidates_report.csv", media_type="text/csv")
+
 
 # Run the FastAPI app using uvicorn
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from app.database import MongoDB
 from app.repositories.candidate_repository import CandidateRepository
 from fastapi import HTTPException, status
 import uuid
+import pandas as pd
 
 class CandidateService:
     """
@@ -105,3 +106,9 @@ class CandidateService:
             - list: A list of dictionaries representing candidates that match the search criteria.
         """
         return self.repository.search_candidates(attribute, value)
+    
+    def generate_csv_content(self):
+        data = self.repository.get_all_candidates()
+        df = pd.DataFrame(data)
+        csv_content = df.to_csv(index=False).encode('utf-8')
+        return csv_content

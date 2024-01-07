@@ -26,7 +26,7 @@ This is a simple FastAPI application for managing candidate information. It incl
 Using Docker Compose
 Build and start the containers:
 
-    docker-compose up --build
+    docker compose up --build
 ### Access the FastAPI app:
 
 The app will be accessible at http://localhost:8000.
@@ -69,3 +69,7 @@ Open http://localhost:8000/docs in your browser to interact with the Swagger UI 
 #### Search Candidates:
 
     GET /all_candidates/search?attribute={attribute}&value={value}
+
+#### Generate Candidates csv report
+
+    GET /generate-report
